@@ -1,0 +1,12 @@
+import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  text: {
+    textAlign: 'center'
+  },
+  container: {
+    margin: 10
+  }
+});
+
+export default styles
