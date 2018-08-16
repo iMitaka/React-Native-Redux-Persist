@@ -2,9 +2,9 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { styles, keyboardStyles } from './styles'
 
+const maxNumbersInput = 15
 const confirm = 'OK'
 const backspace = '<'
-
 const inputButtonsConstants = [
     ['1', '2', '3'],
     ['4', '5', '6'],
@@ -38,7 +38,7 @@ class SecurityVirtualKeyboard extends React.Component {
                 securityNumberHide: '*'.repeat(securityNumber.length)
             })
         } else {
-            if (securityNumber.length <= 15) securityNumber.push(inputValue)
+            if (securityNumber.length <= maxNumbersInput) securityNumber.push(inputValue)
 
             this.setState({
                 securityNumber: securityNumber.join(''),
