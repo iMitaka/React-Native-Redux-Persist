@@ -9,6 +9,7 @@ const screens = {
 
 const screensConfiguration = {
     initialRouteName: 'Validate',
+    //portraitOnlyMode: true,
     navigationOptions: {
         header: null,
     }

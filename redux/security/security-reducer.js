@@ -31,6 +31,10 @@ export default function (state = initialState, action) {
             }
             return Object.assign({}, state)
         }
+        case types.RESET_SECURITY_NUMBER: {
+            state = initialState
+            return Object.assign({}, state)
+        }
         default: {
             return state
         }

@@ -1,15 +1,15 @@
 import React from 'react';
-import { Text, View, TextInput, Button } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import styles from './styles'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as securityActions from '../../redux/security/security-action-creators'
+import SecurityVirtualKeyboard from '../../shared/components/security-virtual-keyboard/security-virtual-keyboard'
 
 class RegisterSecurityNumber extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      securityNumber: '',
       message: {}
     };
   }
@@ -40,32 +40,34 @@ class RegisterSecurityNumber extends React.Component {
     this.props.navigation.navigate('Validate')
   }
 
-  setSecurityNumber = () => {
-    this.props.securityActions.setSecurityNumber(this.state.securityNumber)
+  setSecurityNumber = (number) => {
+    this.props.securityActions.setSecurityNumber(number)
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.text}>Set Your Security Number!</Text>
-        </View>
-        <TextInput
-          style={{ height: 40 }}
-          placeholder="security number..."
-          value={this.state.securityNumber}
-          keyboardType="numeric"
-          onChangeText={(value) => this.handleInputChange('securityNumber', value)}
-        />
-        <Button
-          onPress={this.setSecurityNumber}
-          title="SAVE"
-        />
-        <View>
-          <Text
-            style={{ color: this.state.message.type === 'error' ? 'red' : 'green' }}
-          >{this.state.message.text}</Text>
-        </View>
+      <View
+        style={styles.screenContainer}>
+        <ScrollView
+          style={styles.contentContainer}
+          contentContainerStyle={{ flexGrow: 1 }}>
+          <View
+            style={styles.messageContainer}>
+            <Text
+              style={{
+                color: this.state.message.type === 'error' ? 'red' : 'green'
+              }}
+            >{this.state.message.text}
+            </Text>
+          </View>
+          <View
+            style={styles.keyboardContainer}>
+            <SecurityVirtualKeyboard
+              label="-= Set Your Security Number =-"
+              onOkPress={(number) => this.setSecurityNumber(number)}
+            />
+          </View>
+        </ScrollView>
       </View>
     );
   }

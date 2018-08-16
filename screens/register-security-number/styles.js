@@ -1,20 +1,21 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  text: {
-    textAlign: 'center'
-  },
-  container: {
-    margin: 10
-  }
-});
-
-const stylesBackup = StyleSheet.create({
-  container: {
+  screenContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: '#353638'
+  },
+  contentContainer: { 
+    marginTop: 50 
+  },
+  keyboardContainer: {
+    flex: 7
+  },
+  messageContainer: {
+    flex: 1,
+    height: 30,
     justifyContent: 'center',
+    alignItems: 'center'
   },
 });
 

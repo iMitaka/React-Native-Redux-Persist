@@ -1,9 +1,12 @@
 import React from 'react';
-import { Text, View, TextInput, Button, BackHandler } from 'react-native';
+import { Text, View, Button, Image, ScrollView } from 'react-native';
 import styles from './styles'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as securityActions from '../../redux/security/security-action-creators'
+import lockedImage from '../../resources/images/locked.png'
+import unlockedImage from '../../resources/images/unlocked.png'
+import SecurityVirtualKeyboard from '../../shared/components/security-virtual-keyboard/security-virtual-keyboard'
 
 class ValidateSecurityNumber extends React.Component {
   constructor(props) {
@@ -11,61 +14,70 @@ class ValidateSecurityNumber extends React.Component {
 
     this.state = {
       message: {},
-      securityNumber: ''
-    }
-  }
-
-  componentDidMount() {
-    if (!this.props.security.securityNumber) {
-      this.redirectToPage()
+      isValidNumber: false,
     }
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.security.message) {
       this.setState({
-        message: newProps.security.message
+        message: newProps.security.message,
+        isValidNumber: newProps.security.isValidNumber
       })
+    } else if (!newProps.security.securityNumber) {
+      this.props.navigation.navigate('Register')
     }
   }
 
-  redirectToPage = () => {
-    this.props.navigation.navigate('Register')
+  resetSecurityNumber = () => {
+    this.props.securityActions.resetSecurityNumber()
   }
 
-  handleInputChange = (inputName, value) => {
-    this.setState({
-      [inputName]: value
-    });
-  }
-
-  validateSecurityNumber = () => {
-    this.props.securityActions.validateSecurityNumber(this.state.securityNumber)
+  validateSecurityNumber = (number) => {
+    this.props.securityActions.validateSecurityNumber(number)
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.text}>Validate Your Security Number!</Text>
-        </View>
-        <TextInput
-          style={{ height: 40 }}
-          placeholder="security number..."
-          value={this.state.securityNumber}
-          keyboardType="numeric"
-          onChangeText={(value) => this.handleInputChange('securityNumber', value)}
-        />
+    let actionContent = this.state.isValidNumber ?
+      <View
+        style={styles.resetButtonContainer}>
         <Button
-          onPress={this.validateSecurityNumber}
-          title="VALIDATE"
+          onPress={this.resetSecurityNumber}
+          title="Reset your security number"
         />
-        <View>
-          <Text
-            style={{ color: this.state.message.type === 'error' ? 'red' : 'green' }}
-          >{this.state.message.text}</Text>
-        </View>
       </View>
+      : <SecurityVirtualKeyboard
+        label="-= Enter Your Security Number =-"
+        onOkPress={(number) => this.validateSecurityNumber(number)}
+      />
+
+    return (
+      <ScrollView
+        style={styles.screenContainer}
+        contentContainerStyle={{ flexGrow: 1 }}>
+        <View
+          style={styles.imageAndMessageContainer}>
+          <View
+            style={styles.imageContainer}>
+            <Image
+              source={this.state.isValidNumber ? unlockedImage : lockedImage}
+            />
+          </View>
+          <View
+            style={styles.messageContainer}>
+            <Text
+              style={{
+                color: this.state.message.type === 'error' ? 'red' : 'green'
+              }}
+            >{this.state.message.text}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={styles.keyboardContainer}>
+          {actionContent}
+        </View>
+      </ScrollView>
     );
   }
 }
