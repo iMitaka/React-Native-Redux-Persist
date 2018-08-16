@@ -12,6 +12,8 @@ const inputButtonsConstants = [
     [backspace, '0', confirm]
 ]
 
+var animationHideTimeOut
+
 class SecurityVirtualKeyboard extends React.Component {
     constructor(props) {
         super(props)
@@ -23,7 +25,10 @@ class SecurityVirtualKeyboard extends React.Component {
     }
 
     handleInputChange = (inputValue) => {
+        clearTimeout(animationHideTimeOut)
+
         let securityNumber = this.state.securityNumber.split('') || []
+
         if (inputValue === confirm) {
             this.props.onOkPress(this.state.securityNumber)
             securityNumber = []
@@ -31,11 +36,21 @@ class SecurityVirtualKeyboard extends React.Component {
             if (securityNumber.length >= 1) securityNumber.pop()
         } else {
             if (securityNumber.length <= 15) securityNumber.push(inputValue)
+
+            this.setState({
+                securityNumber: securityNumber.join(''),
+                securityNumberHide: '*'.repeat(securityNumber.length - 1) + inputValue
+            })
+
+            animationHideTimeOut = setTimeout(() => {
+                this.setState({
+                    securityNumberHide: '*'.repeat(securityNumber.length)
+                })
+            }, 1000);
         }
 
         this.setState({
             securityNumber: securityNumber.join(''),
-            securityNumberHide: '*'.repeat(securityNumber.length)
         })
     }
 
