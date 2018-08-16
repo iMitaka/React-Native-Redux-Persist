@@ -34,6 +34,9 @@ class SecurityVirtualKeyboard extends React.Component {
             securityNumber = []
         } else if (inputValue === backspace) {
             if (securityNumber.length >= 1) securityNumber.pop()
+            this.setState({
+                securityNumberHide: '*'.repeat(securityNumber.length)
+            })
         } else {
             if (securityNumber.length <= 15) securityNumber.push(inputValue)
 
