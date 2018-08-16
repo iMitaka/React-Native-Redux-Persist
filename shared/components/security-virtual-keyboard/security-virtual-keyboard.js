@@ -4,7 +4,7 @@ import { styles, keyboardStyles } from './styles'
 
 const maxNumbersInput = 15
 const confirm = 'OK'
-const backspace = '<'
+const backspace = '<<'
 const inputButtonsConstants = [
     ['1', '2', '3'],
     ['4', '5', '6'],

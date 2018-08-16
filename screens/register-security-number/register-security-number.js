@@ -14,7 +14,7 @@ class RegisterSecurityNumber extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     if (this.props.security.securityNumber) {
       this.redirectToPage()
     }
