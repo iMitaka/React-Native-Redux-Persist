@@ -6,28 +6,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#353638'
   },
   imageAndMessageContainer: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
     marginTop: 10
   },
   imageContainer: {
-    flex: 3,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center'
   },
   messageContainer: {
     flex: 1,
-    height: 30,
     justifyContent: 'center',
     alignItems: 'center'
   },
   keyboardContainer: {
-    flex: 7
+    flex: 3
   },
   resetButtonContainer: {
     flex: 1,
-    marginLeft: 50,
-    marginRight: 50
+    margin: 50
   }
 });
 

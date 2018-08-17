@@ -39,8 +39,7 @@ class ValidateSecurityNumber extends React.Component {
 
   render() {
     let actionContent = this.state.isValidNumber ?
-      <View
-        style={styles.resetButtonContainer}>
+      <View style={styles.resetButtonContainer}>
         <Button
           onPress={this.resetSecurityNumber}
           title="Reset your security number"
@@ -52,9 +51,8 @@ class ValidateSecurityNumber extends React.Component {
       />
 
     return (
-      <ScrollView
-        style={styles.screenContainer}
-        contentContainerStyle={{ flexGrow: 1 }}>
+      <View
+        style={styles.screenContainer}>
         <View
           style={styles.imageAndMessageContainer}>
           <View
@@ -67,7 +65,7 @@ class ValidateSecurityNumber extends React.Component {
             style={styles.messageContainer}>
             <Text
               style={{
-                color: this.state.message.type === 'error' ? 'red' : 'green'
+                color: this.state.message.type === 'error' ? 'red' : 'greenyellow'
               }}
             >{this.state.message.text}
             </Text>
@@ -77,7 +75,7 @@ class ValidateSecurityNumber extends React.Component {
           style={styles.keyboardContainer}>
           {actionContent}
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }

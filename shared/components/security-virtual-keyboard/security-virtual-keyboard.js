@@ -87,7 +87,7 @@ class SecurityVirtualKeyboard extends React.Component {
         })
 
         return (
-            <View>
+            <View style={styles.container}>
                 <View
                     style={styles.inputAndLabelContainer}>
                     <View

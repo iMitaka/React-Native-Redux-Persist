@@ -48,26 +48,22 @@ class RegisterSecurityNumber extends React.Component {
     return (
       <View
         style={styles.screenContainer}>
-        <ScrollView
-          style={styles.contentContainer}
-          contentContainerStyle={{ flexGrow: 1 }}>
-          <View
-            style={styles.messageContainer}>
-            <Text
-              style={{
-                color: this.state.message.type === 'error' ? 'red' : 'green'
-              }}
-            >{this.state.message.text}
-            </Text>
-          </View>
-          <View
-            style={styles.keyboardContainer}>
-            <SecurityVirtualKeyboard
-              label="-= Set Your Security Number =-"
-              onOkPress={(number) => this.setSecurityNumber(number)}
-            />
-          </View>
-        </ScrollView>
+        <View
+          style={styles.messageContainer}>
+          <Text
+            style={{
+              color: this.state.message.type === 'error' ? 'red' : 'greenyellow'
+            }}
+          >{this.state.message.text}
+          </Text>
+        </View>
+        <View
+          style={styles.keyboardContainer}>
+          <SecurityVirtualKeyboard
+            label="-= Set Your Security Number =-"
+            onOkPress={(number) => this.setSecurityNumber(number)}
+          />
+        </View>
       </View>
     );
   }

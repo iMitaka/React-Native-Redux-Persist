@@ -21,12 +21,12 @@ export default function (state = initialState, action) {
             if (state.isValidNumber) {
                 state.message = {
                     type: 'success',
-                    text: 'Your PIN is correct!'
+                    text: 'Correct Security Number!'
                 }
             } else if (!state.message) {
                 state.message = {
                     type: 'error',
-                    text: 'Your PIN is invalid!'
+                    text: 'Invalid Security Number!'
                 }
             }
             return Object.assign({}, state)

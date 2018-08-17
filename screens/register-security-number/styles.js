@@ -5,18 +5,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#353638'
   },
-  contentContainer: { 
-    marginTop: 50 
-  },
   keyboardContainer: {
-    flex: 7
+    flex: 6
   },
   messageContainer: {
     flex: 1,
-    height: 30,
     justifyContent: 'center',
     alignItems: 'center'
-  },
+  }
 });
 
 export default styles

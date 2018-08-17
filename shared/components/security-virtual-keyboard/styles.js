@@ -1,13 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     inputAndLabelContainer: {
-        flex: 1,
-        justifyContent: 'center'
+        flex: 1
     },
     labelContainer: {
-        flex: 1,
-        justifyContent: 'center'
+        flex: 1
     },
     label: {
         color: 'white',
@@ -16,22 +17,21 @@ export const styles = StyleSheet.create({
     },
     inputContainer: {
         flex: 1,
-        height: 50,
         justifyContent: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: 'grey',
         marginLeft: 50,
         marginRight: 50
     },
     securityNumber: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 30
+        fontSize: 30,
+        height: 45,
+        borderBottomWidth: 1,
+        borderBottomColor: 'grey',
     },
-    inputButtonsContainer: {
-        flex: 5,
-        marginTop: 30,
-        marginBottom: 10,
+    inputButtonsContainer: { 
+        flex: 6, 
+        marginTop: 20 
     }
 })
 
