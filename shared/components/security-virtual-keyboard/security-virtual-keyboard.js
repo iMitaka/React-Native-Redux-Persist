@@ -2,18 +2,18 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { styles, keyboardStyles } from './styles'
 
-const maxNumbersInput = 15
-const confirm = 'OK'
-const backspace = '<<'
-const inputButtonsConstants = [
+const MAX_NUMBERS_INPUT = 15
+const CONFIRM = 'OK'
+const BACKSPACE = '<<'
+const INPUT_BUTTONS_CONSTANTS = [
     ['1', '2', '3'],
     ['4', '5', '6'],
     ['7', '8', '9'],
-    [backspace, '0', confirm]
+    [BACKSPACE, '0', CONFIRM]
 ]
+const HIDE_VALUE_ANIMATION_DUARATION = 1000
 
-const animationHideDuration = 1000
-var animationHideTimeOut
+var hideAnimationTimeOut
 
 class SecurityVirtualKeyboard extends React.Component {
     constructor(props) {
@@ -26,28 +26,28 @@ class SecurityVirtualKeyboard extends React.Component {
     }
 
     handleInputChange = (inputValue) => {
-        clearTimeout(animationHideTimeOut)
+        clearTimeout(hideAnimationTimeOut)
 
         let securityNumber = this.state.securityNumber.split('') || []
 
-        if (inputValue === confirm) {
+        if (inputValue === CONFIRM) {
             this.props.onOkPress(this.state.securityNumber)
             securityNumber = []
             this.setHiddenSecurityNumberText(securityNumber.length)
-        } else if (inputValue === backspace) {
+        } else if (inputValue === BACKSPACE) {
             if (securityNumber.length >= 1) securityNumber.pop()
             this.setHiddenSecurityNumberText(securityNumber.length)
         } else {
-            if (securityNumber.length <= maxNumbersInput) securityNumber.push(inputValue)
+            if (securityNumber.length <= MAX_NUMBERS_INPUT) securityNumber.push(inputValue)
 
             this.setState({
                 securityNumber: securityNumber.join(''),
                 securityNumberHide: '*'.repeat(securityNumber.length - 1) + inputValue
             })
 
-            animationHideTimeOut = setTimeout(() => {
+            hideAnimationTimeOut = setTimeout(() => {
                 this.setHiddenSecurityNumberText(securityNumber.length)
-            }, animationHideDuration);
+            }, HIDE_VALUE_ANIMATION_DUARATION);
         }
 
         this.setState({
@@ -62,7 +62,7 @@ class SecurityVirtualKeyboard extends React.Component {
     }
 
     render() {
-        let inputButons = inputButtonsConstants.map((inputButtons, index) => {
+        let inputButons = INPUT_BUTTONS_CONSTANTS.map((inputButtons, index) => {
             let inputConstantRow = inputButtons.map((button, buttonIndex) => {
                 return (
                     <TouchableOpacity
