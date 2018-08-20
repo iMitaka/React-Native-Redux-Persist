@@ -1,21 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  text: {
-    textAlign: 'center'
-  },
-  container: {
-    margin: 10
-  }
-});
-
-const stylesBackup = StyleSheet.create({
-  container: {
+  screenContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#353638'
   },
+  keyboardContainer: {
+    flex: 6
+  },
+  messageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
 
 export default styles

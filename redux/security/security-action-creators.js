@@ -19,6 +19,12 @@ export function validateSecurityNumber(number) {
     }
 }
 
+export function resetSecurityNumber() {
+    return {
+        type: types.RESET_SECURITY_NUMBER
+    }
+}
+
 function validateSecurityNumberLength(number, minLength) {
     if (number.length >= minLength) {
         return {
@@ -28,7 +34,7 @@ function validateSecurityNumberLength(number, minLength) {
         return {
             message: {
                 type: 'error',
-                text: 'Your security number must contain at least 4 characters!'
+                text: 'Security number must be at least 4 characters!'
             }
         }
     }

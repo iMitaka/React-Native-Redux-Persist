@@ -1,9 +1,12 @@
 import React from 'react';
-import { Text, View, TextInput, Button, BackHandler } from 'react-native';
+import { Text, View, Button, Image, BackHandler, Alert } from 'react-native';
 import styles from './styles'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as securityActions from '../../redux/security/security-action-creators'
+import lockedImage from '../../resources/images/locked.png'
+import unlockedImage from '../../resources/images/unlocked.png'
+import SecurityVirtualKeyboard from '../../shared/components/security-virtual-keyboard/security-virtual-keyboard'
 
 class ValidateSecurityNumber extends React.Component {
   constructor(props) {
@@ -11,59 +14,96 @@ class ValidateSecurityNumber extends React.Component {
 
     this.state = {
       message: {},
-      securityNumber: ''
+      isValidNumber: false,
     }
   }
 
   componentDidMount() {
-    if (!this.props.security.securityNumber) {
-      this.redirectToPage()
-    }
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    this.removeBackButtonHandler()
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.security.message) {
       this.setState({
-        message: newProps.security.message
+        message: newProps.security.message,
+        isValidNumber: newProps.security.isValidNumber
       })
+    } else if (!newProps.security.securityNumber) {
+      this.removeBackButtonHandler()
+      this.props.navigation.navigate('Register')
     }
   }
 
-  redirectToPage = () => {
-    this.props.navigation.navigate('Register')
+  handleBackButton = () => {
+    Alert.alert(
+      'Exit App',
+      'Exiting the application?', [{
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel'
+      }, {
+        text: 'OK',
+        onPress: () => BackHandler.exitApp()
+      },], {
+        cancelable: false
+      }
+    )
+    return true;
   }
 
-  handleInputChange = (inputName, value) => {
-    this.setState({
-      [inputName]: value
-    });
+  removeBackButtonHandler = () => {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
   }
 
-  validateSecurityNumber = () => {
-    this.props.securityActions.validateSecurityNumber(this.state.securityNumber)
+  resetSecurityNumber = () => {
+    this.props.securityActions.resetSecurityNumber()
+  }
+
+  validateSecurityNumber = (number) => {
+    this.props.securityActions.validateSecurityNumber(number)
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.text}>Validate Your Security Number!</Text>
-        </View>
-        <TextInput
-          style={{ height: 40 }}
-          placeholder="security number..."
-          value={this.state.securityNumber}
-          keyboardType="numeric"
-          onChangeText={(value) => this.handleInputChange('securityNumber', value)}
-        />
+    let actionContent = this.state.isValidNumber ?
+      <View style={styles.resetButtonContainer}>
         <Button
-          onPress={this.validateSecurityNumber}
-          title="VALIDATE"
+          onPress={this.resetSecurityNumber}
+          title="Reset your security number"
         />
-        <View>
-          <Text
-            style={{ color: this.state.message.type === 'error' ? 'red' : 'green' }}
-          >{this.state.message.text}</Text>
+      </View>
+      : <SecurityVirtualKeyboard
+        label="-= Enter Your Security Number =-"
+        onOkPress={(number) => this.validateSecurityNumber(number)}
+      />
+
+    return (
+      <View
+        style={styles.screenContainer}>
+        <View
+          style={styles.imageAndMessageContainer}>
+          <View
+            style={styles.imageContainer}>
+            <Image
+              source={this.state.isValidNumber ? unlockedImage : lockedImage}
+            />
+          </View>
+          <View
+            style={styles.messageContainer}>
+            <Text
+              style={{
+                color: this.state.message.type === 'error' ? 'red' : 'greenyellow'
+              }}
+            >{this.state.message.text}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={styles.keyboardContainer}>
+          {actionContent}
         </View>
       </View>
     );

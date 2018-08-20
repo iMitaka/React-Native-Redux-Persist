@@ -1,23 +1,31 @@
 import React from 'react';
-import { Text, View, TextInput, Button } from 'react-native';
+import { View, Text, BackHandler, Alert } from 'react-native';
 import styles from './styles'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as securityActions from '../../redux/security/security-action-creators'
+import SecurityVirtualKeyboard from '../../shared/components/security-virtual-keyboard/security-virtual-keyboard'
 
 class RegisterSecurityNumber extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      securityNumber: '',
       message: {}
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     if (this.props.security.securityNumber) {
       this.redirectToPage()
     }
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    this.removeBackButtonHandler()
   }
 
   componentWillReceiveProps(newProps) {
@@ -30,6 +38,27 @@ class RegisterSecurityNumber extends React.Component {
     }
   }
 
+  handleBackButton = () => {
+    Alert.alert(
+      'Exit App',
+      'Exiting the application?', [{
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel'
+      }, {
+        text: 'OK',
+        onPress: () => BackHandler.exitApp()
+      },], {
+        cancelable: false
+      }
+    )
+    return true;
+  }
+
+  removeBackButtonHandler = () => {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
   handleInputChange = (inputName, value) => {
     this.setState({
       [inputName]: value
@@ -37,34 +66,33 @@ class RegisterSecurityNumber extends React.Component {
   }
 
   redirectToPage = () => {
+    this.removeBackButtonHandler()
     this.props.navigation.navigate('Validate')
   }
 
-  setSecurityNumber = () => {
-    this.props.securityActions.setSecurityNumber(this.state.securityNumber)
+  setSecurityNumber = (number) => {
+    this.props.securityActions.setSecurityNumber(number)
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.text}>Set Your Security Number!</Text>
-        </View>
-        <TextInput
-          style={{ height: 40 }}
-          placeholder="security number..."
-          value={this.state.securityNumber}
-          keyboardType="numeric"
-          onChangeText={(value) => this.handleInputChange('securityNumber', value)}
-        />
-        <Button
-          onPress={this.setSecurityNumber}
-          title="SAVE"
-        />
-        <View>
+      <View
+        style={styles.screenContainer}>
+        <View
+          style={styles.messageContainer}>
           <Text
-            style={{ color: this.state.message.type === 'error' ? 'red' : 'green' }}
-          >{this.state.message.text}</Text>
+            style={{
+              color: this.state.message.type === 'error' ? 'red' : 'greenyellow'
+            }}
+          >{this.state.message.text}
+          </Text>
+        </View>
+        <View
+          style={styles.keyboardContainer}>
+          <SecurityVirtualKeyboard
+            label="-= Set Your Security Number =-"
+            onOkPress={(number) => this.setSecurityNumber(number)}
+          />
         </View>
       </View>
     );
