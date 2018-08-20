@@ -66,6 +66,7 @@ class RegisterSecurityNumber extends React.Component {
   }
 
   redirectToPage = () => {
+    this.removeBackButtonHandler()
     this.props.navigation.navigate('Validate')
   }
 
