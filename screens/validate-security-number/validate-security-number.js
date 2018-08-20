@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, Image, ScrollView } from 'react-native';
+import { Text, View, Button, Image, BackHandler, Alert } from 'react-native';
 import styles from './styles'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -18,6 +18,14 @@ class ValidateSecurityNumber extends React.Component {
     }
   }
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    this.removeBackButtonHandler()
+  }
+
   componentWillReceiveProps(newProps) {
     if (newProps.security.message) {
       this.setState({
@@ -25,8 +33,30 @@ class ValidateSecurityNumber extends React.Component {
         isValidNumber: newProps.security.isValidNumber
       })
     } else if (!newProps.security.securityNumber) {
+      this.removeBackButtonHandler()
       this.props.navigation.navigate('Register')
     }
+  }
+
+  handleBackButton = () => {
+    Alert.alert(
+      'Exit App',
+      'Exiting the application?', [{
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel'
+      }, {
+        text: 'OK',
+        onPress: () => BackHandler.exitApp()
+      },], {
+        cancelable: false
+      }
+    )
+    return true;
+  }
+
+  removeBackButtonHandler = () => {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
   }
 
   resetSecurityNumber = () => {
