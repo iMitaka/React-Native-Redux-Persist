@@ -2,7 +2,7 @@ import { Alert, BackHandler } from 'react-native';
 
 const HARDWARE_BACK_PRESS = 'hardwareBackPress'
 
-export const exitAppAlert = () => {
+const EXIT_APP_ALERT = () => {
     Alert.alert(
         'Exit App',
         'Exiting the application?', [{
@@ -19,10 +19,10 @@ export const exitAppAlert = () => {
     return true;
 }
 
-export const addBackButtonEventListener = (handleBackButtonFunction) => {
-    BackHandler.addEventListener(HARDWARE_BACK_PRESS, handleBackButtonFunction);
+export const addBackButtonEventListener = () => {
+    BackHandler.addEventListener(HARDWARE_BACK_PRESS, EXIT_APP_ALERT);
 }
 
-export const removeBackButtonEventListener = (handleBackButtonFunction) => {
-    BackHandler.removeEventListener(HARDWARE_BACK_PRESS, handleBackButtonFunction);
+export const removeBackButtonEventListener = () => {
+    BackHandler.removeEventListener(HARDWARE_BACK_PRESS, EXIT_APP_ALERT);
 }

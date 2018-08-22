@@ -8,7 +8,6 @@ import lockedImage from '../../resources/images/locked.png'
 import unlockedImage from '../../resources/images/unlocked.png'
 import SecurityVirtualKeyboard from '../../shared/components/security-virtual-keyboard/security-virtual-keyboard'
 import {
-  exitAppAlert,
   addBackButtonEventListener,
   removeBackButtonEventListener
 } from '../../shared/components/exit-app-back-handler/exit-app-back-handler'
@@ -24,7 +23,7 @@ class ValidateSecurityNumber extends React.Component {
   }
 
   componentDidMount() {
-    addBackButtonEventListener(this.handleBackButton)
+    addBackButtonEventListener()
   }
 
   componentWillUnmount() {
@@ -43,12 +42,8 @@ class ValidateSecurityNumber extends React.Component {
     }
   }
 
-  handleBackButton = () => {
-    return exitAppAlert()
-  }
-
   removeBackButtonHandler = () => {
-    removeBackButtonEventListener(this.handleBackButton)
+    removeBackButtonEventListener()
   }
 
   resetSecurityNumber = () => {
