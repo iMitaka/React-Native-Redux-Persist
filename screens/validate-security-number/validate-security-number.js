@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, Image, BackHandler, Alert } from 'react-native';
+import { Text, View, Button, Image } from 'react-native';
 import styles from './styles'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -7,6 +7,11 @@ import * as securityActions from '../../redux/security/security-action-creators'
 import lockedImage from '../../resources/images/locked.png'
 import unlockedImage from '../../resources/images/unlocked.png'
 import SecurityVirtualKeyboard from '../../shared/components/security-virtual-keyboard/security-virtual-keyboard'
+import {
+  exitAppAlert,
+  addBackButtonEventListener,
+  removeBackButtonEventListener
+} from '../../shared/components/exit-app-back-handler/exit-app-back-handler'
 
 class ValidateSecurityNumber extends React.Component {
   constructor(props) {
@@ -19,7 +24,7 @@ class ValidateSecurityNumber extends React.Component {
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    addBackButtonEventListener(this.handleBackButton)
   }
 
   componentWillUnmount() {
@@ -39,24 +44,11 @@ class ValidateSecurityNumber extends React.Component {
   }
 
   handleBackButton = () => {
-    Alert.alert(
-      'Exit App',
-      'Exiting the application?', [{
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel'
-      }, {
-        text: 'OK',
-        onPress: () => BackHandler.exitApp()
-      },], {
-        cancelable: false
-      }
-    )
-    return true;
+    return exitAppAlert()
   }
 
   removeBackButtonHandler = () => {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+    removeBackButtonEventListener(this.handleBackButton)
   }
 
   resetSecurityNumber = () => {

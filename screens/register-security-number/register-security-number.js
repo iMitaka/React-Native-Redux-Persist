@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, Text, BackHandler, Alert } from 'react-native';
+import { View, Text } from 'react-native';
 import styles from './styles'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as securityActions from '../../redux/security/security-action-creators'
 import SecurityVirtualKeyboard from '../../shared/components/security-virtual-keyboard/security-virtual-keyboard'
+import {
+  exitAppAlert,
+  addBackButtonEventListener,
+  removeBackButtonEventListener
+} from '../../shared/components/exit-app-back-handler/exit-app-back-handler'
 
 class RegisterSecurityNumber extends React.Component {
   constructor(props) {
@@ -21,7 +26,7 @@ class RegisterSecurityNumber extends React.Component {
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    addBackButtonEventListener(this.handleBackButton)
   }
 
   componentWillUnmount() {
@@ -39,24 +44,11 @@ class RegisterSecurityNumber extends React.Component {
   }
 
   handleBackButton = () => {
-    Alert.alert(
-      'Exit App',
-      'Exiting the application?', [{
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel'
-      }, {
-        text: 'OK',
-        onPress: () => BackHandler.exitApp()
-      },], {
-        cancelable: false
-      }
-    )
-    return true;
+    return exitAppAlert()
   }
 
   removeBackButtonHandler = () => {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+    removeBackButtonEventListener(this.handleBackButton)
   }
 
   handleInputChange = (inputName, value) => {
